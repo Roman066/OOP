@@ -19,19 +19,40 @@ class Student:
         else:
             return 'Ошибка'
 
+    def add_courses(self, course_name):
+        self.finished_courses.append(course_name)
+
+    def __str__(self):
+        output = f'Имя: {self.name}\nФамилия: {self.surname}\nСредняя оценка за домашние задания: {average_grade(self.grades)}\nКурсы в процессе изучения: {self.courses_in_progress}\nЗавершенные курсы: {self.finished_courses}'
+
+    def __lt__(self, other_student):
+        if isinstance(other_student, Student):
+            return average_grade(self.grades) < average_grade(other_student.grades)
+        else:
+            return None
+
 # Класс преподователей
 class Mentor:
     def __init__(self, name, surname):
         self.name = name
         self.surname = surname
-        self.courses_attached = []
-        
+
 # Класс лекторов
 class Lecturer(Mentor):
     def __init__(self, name, surname):
         super().__init__(name, surname)
         self.grades = []
         self.courses_attached = []
+
+    def __str__(self):
+        output = f'Имя: {self.name}\nФамилия: {self.surname}\nСредняя оценка за лекции: {average_grade(self.grades)}'
+        return output
+
+    def __lt__(self, other_lecturer):
+        if isinstance(other_lecturer, Lecturer):
+            return average_grade(self.grades) < average_grade(other_lecturer.grades)
+        else:
+            return None
 
 # Класс экспертов
 class Reviewer(Mentor):
@@ -48,3 +69,7 @@ class Reviewer(Mentor):
                 specific_student.grades[course] += [grade]
             else:
                 return 'Ошибка'
+
+    def __str__(self):
+        output = f'Имя: {self.name}\nФамилия: {self.surname}'
+        return output
